@@ -1,0 +1,1 @@
+export const valuesToPick = ['imageURL', 'position', 'tooltip', 'id', 'name'];

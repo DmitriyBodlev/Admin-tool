@@ -1,28 +1,44 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Route, Switch, withRouter } from "react-router-dom";
+// components
+import LoaderComponent from './components/loader';
+import CommonModal from './components/modal';
+// features
+import ImagesComponent from './features/images';
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Switch>
+          <Route path="/" component={ImagesComponent} />
+        </Switch>
+        {
+          this.props.modalData.isOpened &&
+          <CommonModal params={{ ...this.props.modalData, modal: this.props.modalData.modal }} />
+        }
+        {this.props.loader.isOpened && <LoaderComponent />}
+        <style>{`
+          body {
+            margin: 0;
+            overflow-x: hidden;
+          }
+          * {
+            box-sizing: border-box;
+            outline: none;
+          }
+        `}</style>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  state: state.loader,
+  modalData: state.modal,
+  loader: state.loader,
+});
+
+export default withRouter(connect(mapStateToProps)(App));
